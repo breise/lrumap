@@ -80,7 +80,6 @@ func TestBasic(t *testing.T) {
 				expSl := fmt.Sprintf("%v", v.list)
 				if gotSl != expSl {
 					t.Errorf(msgFmt, desc, j, v, "contents", expSl, gotSl)
-
 				}
 			}
 		})
