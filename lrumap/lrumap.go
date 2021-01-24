@@ -6,10 +6,6 @@ import (
 	"github.com/breise/lrumap.git/lrulist"
 )
 
-const (
-	oneMeg = 1 << 20
-)
-
 type LruMap struct {
 	theMap  map[interface{}]*lrulist.Node
 	lruList *lrulist.LruList
