@@ -3,7 +3,7 @@ package lrumap
 import (
 	"fmt"
 
-	"github.com/breise/lrumap.git/lrulist"
+	"github.com/breise/lrumap/lrulist"
 )
 
 type LruMap struct {
