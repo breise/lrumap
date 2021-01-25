@@ -116,7 +116,7 @@ func TestComplex(t *testing.T) {
 		idx := len(plays) - 1 - i
 		play := plays[idx]
 		nm := fmt.Sprintf("%s_1_%d", strings.TrimSpace(play.title), i)
-		exps1 = append(exps1, exp{name: nm, n: play, found: true, nItems: maxItems})
+		exps1 = append(exps1, exp{name: nm, n: play, found: idx > 0, nItems: maxItems})
 	}
 	tc1 := testCase{max: maxItems, inputs: exps1}
 
