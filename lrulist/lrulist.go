@@ -37,6 +37,7 @@ func (lrulist *LruList) MaxItems(x int) *LruList {
 	lrulist.maxItems = x
 	return lrulist
 }
+
 func (lrulist *LruList) NItems() int { return lrulist.nItems }
 
 func (lrulist *LruList) ToSlice() []interface{} {
@@ -53,7 +54,7 @@ func (lrulist *LruList) remove(node *Node) {
 	lrulist.nItems--
 }
 
-// Drops the first node, returns the item
+// drop the first node; return the item
 func (lrulist *LruList) drop() interface{} {
 	node := lrulist.head.next
 	lrulist.remove(node)

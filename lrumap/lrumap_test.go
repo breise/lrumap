@@ -75,7 +75,6 @@ type play struct {
 func TestComplex(t *testing.T) {
 
 	plays := make([]play, len(structTests))
-
 	for i, filePath := range structTests {
 		txt, err := ioutil.ReadFile(filePath)
 		if err != nil {
@@ -93,6 +92,7 @@ func TestComplex(t *testing.T) {
 			text:      info[7],
 		}
 	}
+
 	var exps0 []exp
 	for i, play := range plays {
 		nm := fmt.Sprintf("%s_0_%d", strings.TrimSpace(play.title), i)
@@ -130,7 +130,6 @@ func TestComplex(t *testing.T) {
 			singleCaseTest(t, tc, desc, countWords)
 		})
 	}
-
 }
 
 func singleCaseTest(t *testing.T, tc testCase, desc string, fn func(interface{}) interface{}) {
@@ -171,6 +170,7 @@ func singleCaseTest(t *testing.T, tc testCase, desc string, fn func(interface{})
 		}
 	}
 }
+
 func sumTo(x interface{}) interface{} {
 	n, ok := x.(int)
 	if !ok {

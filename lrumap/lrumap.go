@@ -27,8 +27,7 @@ func (lrumap *LruMap) MaxItems(x int) *LruMap {
 	return lrumap
 }
 
-/*Get()
- * return the item and update its position in the lru list
+/* Get retrieves the item and update its position in the lru list
  */
 func (lrumap *LruMap) Get(k interface{}) (value interface{}, ok bool) {
 	node, ok := lrumap.theMap[k]
