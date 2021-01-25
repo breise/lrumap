@@ -1,3 +1,3 @@
-module github.com/breise/lrumap.git
+module github.com/breise/lrumap
 
 go 1.15
