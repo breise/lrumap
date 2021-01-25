@@ -136,21 +136,22 @@ func singleCaseTest(t *testing.T, tc testCase, desc string, fn func(interface{})
 	lm := New().MaxItems(tc.max)
 	for j, v := range tc.inputs {
 		msgFmt := "%s: input #%d: %s: %s: Exp: %v; Got: %v"
+		answer := fn(v.n) // normally, you would do this only if !found.  In this test, we are checking our got value.
 		got, found := lm.Get(v.n)
 		if found != v.found {
 			t.Errorf(msgFmt, desc, j, v.name, "found", v.found, found)
 		}
 		if !found {
-			lm.Put(v.n, fn(v.n))
+			lm.Put(v.n, answer)
 		}
 		if lm.NItems() != v.nItems {
 			t.Errorf(msgFmt, desc, j, v.name, "nItems", v.nItems, lm.NItems())
 		}
-		if found && got != fn(v.n) {
-			t.Errorf(msgFmt, desc, j, v.name, "got", fn(v.n), got)
+		if found && got != answer {
+			t.Errorf(msgFmt, desc, j, v.name, "got", answer, got)
 		}
-		// if found && got == fn(v.n) {
-		// 	fmt.Printf(msgFmt+"\n", desc, j, v, "got", fn(v.n), got)
+		// if found && got == answer {
+		// 	fmt.Printf(msgFmt+"\n", desc, j, v, "got", answer, got)
 		// }
 		if len(v.list) > 0 {
 			kvSl := lm.lruList.ToSlice()
