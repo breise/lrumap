@@ -6,9 +6,14 @@ import (
 	"github.com/breise/lrumap/lrulist"
 )
 
+type stats struct {
+	puts, gets, hits, misses, evictions int
+}
+
 type LruMap struct {
 	theMap  map[interface{}]*lrulist.Node
 	lruList *lrulist.LruList
+	stats
 }
 
 func New() *LruMap {
@@ -30,10 +35,13 @@ func (lrumap *LruMap) MaxItems(x int) *LruMap {
 /* Get retrieves the item and update its position in the lru list
  */
 func (lrumap *LruMap) Get(k interface{}) (value interface{}, ok bool) {
+	lrumap.gets++
 	node, ok := lrumap.theMap[k]
 	if !ok {
+		lrumap.misses++
 		return nil, ok
 	}
+	lrumap.hits++
 	lrumap.lruList.Update(node)
 	kv, ok := node.Item.(kvPair)
 	if !ok {
@@ -46,11 +54,15 @@ func (lrumap *LruMap) Get(k interface{}) (value interface{}, ok bool) {
 type kvPair struct{ k, v interface{} }
 
 func (lrumap *LruMap) Put(k, v interface{}) {
-	if _, ok := lrumap.theMap[k]; ok {
+	if item, ok := lrumap.theMap[k]; ok {
+		// This is a reassignment of an existing key
+		// TODO: 
+		//    remove item from lruList
+		//    continue with lruList.Add() and theMap[k] = node, below
 		return
 	}
+	lrumap.puts++
 	node, dropped := lrumap.lruList.Add(kvPair{k, v})
-
 	lrumap.theMap[k] = node
 	for i, doomed := range dropped {
 		kv, ok := doomed.(kvPair)
@@ -59,4 +71,5 @@ func (lrumap *LruMap) Put(k, v interface{}) {
 		}
 		delete(lrumap.theMap, kv.k)
 	}
+	lrumap.evictions += len(dropped)
 }
